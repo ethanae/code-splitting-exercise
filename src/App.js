@@ -1,16 +1,33 @@
 import React, { Component } from 'react';
+import Loadable from 'react-loadable';
 import './App.css';
 
-import Page1 from './Components/Page1';
+// import Page1 from './Components/Page1';
 // Part 1 - No Code Splitting
-import Page2 from './Components/Page2';
-import Page3 from './Components/Page3';
+// import Page2 from './Components/Page2';
+// import Page3 from './Components/Page3';
+import Loading from './Components/Loading';
 // Part 3 - Cleaner Code Splitting
 // import AsyncComponent from './AsyncComponent';
 
+const Page1Loadable = Loadable({
+  loader: () => import('./Components/Page1'),
+  loading: Loading,
+});
+
+const Page2Loadable = Loadable({
+  loader: () => import('./Components/Page2'),
+  loading: Loading,
+});
+
+const Page3Loadable = Loadable({
+  loader: () => import('./Components/Page3'),
+  loading: Loading,
+});
+
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       route: 'page1',
       // Part 2 - Code Splitting - manual
@@ -42,13 +59,13 @@ class App extends Component {
   }
   render() {
     // Part 1 - No code splitting
-    if (this.state.route === 'page1') {
-      return <Page1 onRouteChange={this.onRouteChange} />
-    } else if (this.state.route === 'page2') {
-      return <Page2 onRouteChange={this.onRouteChange} />
-    } else {
-      return <Page3 onRouteChange={this.onRouteChange} />
-    }
+    // if (this.state.route === 'page1') {
+    //   return <Page1 onRouteChange={this.onRouteChange} />
+    // } else if (this.state.route === 'page2') {
+    //   return <Page2 onRouteChange={this.onRouteChange} />
+    // } else {
+    //   return <Page3 onRouteChange={this.onRouteChange} />
+    // }
 
     // Part 2 - No Code Splitting - manual
     // if (this.state.route === 'page1') {
@@ -68,6 +85,16 @@ class App extends Component {
     //   return <AsyncPage3 onRouteChange={this.onRouteChange} />
     // }
 
+    /**
+     * Code-splitting part 4 - React Loadable
+     */
+    if (this.state.route === 'page1') {
+      return <Page1Loadable onRouteChange={this.onRouteChange} />
+    } else if (this.state.route === 'page2') {
+      return <Page2Loadable onRouteChange={this.onRouteChange} />
+    } else {
+      return <Page3Loadable onRouteChange={this.onRouteChange} />
+    }
   }
 }
 
